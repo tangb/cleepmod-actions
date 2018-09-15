@@ -1,0 +1,52 @@
+<div layout="column" layout-padding ng-cloak>
+
+    <!-- list -->
+    <md-table-container>
+        <table md-table>
+        <thead md-head md-order="columnOrder">
+            <tr md-row>
+                <th md-column md-order-by="name">Script</th>
+                <th md-column md-order-by="last">Last execution</th>
+                <th md-column>Actions</th>
+            </tr>
+        </thead>
+        <tbody md-body>
+            <tr md-row md-auto-select ng-repeat="script in actionsCtl.scripts | orderBy:columnOrder">
+                <td md-cell>
+                    <del ng-if="script.disabled">{{script.name}}</del>
+                    <span ng-if="!script.disabled">{{script.name}}</span>
+                </td>
+                <td md-cell>{{script.lastexecution | hrDatetime}}</td>
+                <td md-cell>
+                    <md-button class="md-icon-button" href="{{'#!module/actions/edit/'+script.name}}" aria-label="Edit script">
+                        <md-tooltip md-direction="bottom">Edit script</md-tooltip>
+                        <md-icon md-svg-icon="pencil"></md-icon>
+                    </md-button>
+                    <md-button class="md-icon-button" ng-click="actionsCtl.disableScript(script.name, true)" ng-if="!script.disabled" aria-label="Disable script">
+                        <md-tooltip md-direction="bottom">Disable script</md-tooltip>
+                        <md-icon md-svg-icon="sleep-off"></md-icon>
+                    </md-button>
+                    <md-button class="md-icon-button" ng-click="actionsCtl.disableScript(script.name, false)" ng-if="script.disabled" aria-label="Enable script">
+                        <md-tooltip md-direction="bottom">Enable script</md-tooltip>
+                        <md-icon md-svg-icon="sleep"></md-icon>
+                    </md-button>
+                    <md-button class="md-icon-button" ng-click="actionsCtl.downloadScript(script.name)" aria-label="Download script">
+                        <md-tooltip md-direction="bottom">Download script</md-tooltip>
+                        <md-icon md-svg-icon="download"></md-icon>
+                    </md-button>
+                    <md-button class="md-icon-button" ng-click="actionsCtl.openDeleteDialog(script.name)" aria-label="Delete">
+                        <md-tooltip md-direction="bottom">Delete script</md-tooltip>
+                        <md-icon md-svg-icon="delete"></md-icon>
+                    </md-button>
+                </td>
+            </tr>
+        </tbody>
+        <tfoot md-foot>
+            <tr md-row></tr>
+            <tr md-row></tr>
+        </tfoot>
+        </table>
+    </md-table-container>
+
+</div>
+

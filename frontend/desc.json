@@ -1,0 +1,11 @@
+{
+    "icon": "play-box-outline",
+    "system": {
+        "widgets": [],
+        "services": []
+    },
+    "config": {
+        "js": ["actions.directive.js", "actions.service.js"],
+        "html": ["uploadAction.directive.html", "actions.directive.html"]
+    }
+}

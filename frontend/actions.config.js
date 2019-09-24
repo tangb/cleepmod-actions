@@ -79,7 +79,7 @@ var actionsConfigDirective = function($rootScope, toast, raspiotService, actions
          * Delete script
          */
         self.openDeleteDialog = function(script) {
-            confirm.open('Delete script?', null, 'Delete')
+            confirm.open('Delete action?', null, 'Delete')
                 .then(function() {
                     return actionsService.deleteScript(script);
                 })
@@ -88,7 +88,7 @@ var actionsConfigDirective = function($rootScope, toast, raspiotService, actions
                 })
                 .then(function(config) {
                     self.scripts = config.scripts;
-                    toast.success('Script deleted');
+                    toast.success('Action deleted');
                 });
         };
 
@@ -101,7 +101,7 @@ var actionsConfigDirective = function($rootScope, toast, raspiotService, actions
             if( file )
             {
                 //launch upload
-                toast.loading('Uploading script...');
+                toast.loading('Uploading action...');
                 actionsService.uploadScript(file)
                     .then(function(resp) {
                         return raspiotService.reloadModuleConfig('actions');
@@ -109,7 +109,7 @@ var actionsConfigDirective = function($rootScope, toast, raspiotService, actions
                     .then(function(config) {
                         $mdDialog.hide();
                         self.scripts = config.scripts;
-                        toast.success('Script uploaded');
+                        toast.success('Action uploaded');
                     });
             }
         });
@@ -127,9 +127,9 @@ var actionsConfigDirective = function($rootScope, toast, raspiotService, actions
 
                     //message info
                     if( disabled ) {
-                        toast.success('Script is disabled');
+                        toast.success('Action is disabled');
                     } else {
-                        toast.success('Script is enabled');
+                        toast.success('Action is enabled');
                     }
                 });
         };
@@ -155,11 +155,11 @@ var actionsConfigDirective = function($rootScope, toast, raspiotService, actions
             var actions = [{
                 icon: 'plus',
                 callback: self.openAddDialog,
-                tooltip: 'Create script'
+                tooltip: 'Create new action'
             }, {
                 icon: 'upload',
                 callback: self.openUploadDialog,
-                tooltip: 'Upload script'
+                tooltip: 'Upload action'
             }]; 
             $rootScope.$broadcast('enableFab', actions);
         };

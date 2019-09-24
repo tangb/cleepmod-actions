@@ -347,12 +347,12 @@ class Actions(RaspIotModule):
             self.logger.error(u'Script file "%s" doesn\'t exist' % filepath)
             raise Exception(u'Script file "%s"  doesn\'t exists' % filepath)
 
-    def download_script(self, script):
+    def download_script(self, filename):
         """
-        Download specified script
+        Download specified action
 
         Args:
-            script (string): script name to download
+            filename (string): script name to download
 
         Returns:
             string: script full path
@@ -360,15 +360,16 @@ class Actions(RaspIotModule):
         Raises:
             Exception: if error occured
         """
-        filepath = os.path.join(Actions.SCRIPTS_PATH, script)
+        filepath = os.path.join(Actions.SCRIPTS_PATH, filename)
         if os.path.exists(filepath):
             #script is valid, return full filepath
             return {
-                u'filepath': filepath
+                u'filepath': filepath,
+                u'filename': filename,
             }
         else:
             #script doesn't exist, raise exception
-            raise Exception(u'Script "%s" doesn\'t exist' % script)
+            raise Exception(u'Action "%s" doesn\'t exist' % filename)
 
     def debug_script(self, script, event_name=None, event_values=None):
         """

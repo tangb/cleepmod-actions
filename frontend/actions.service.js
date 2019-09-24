@@ -23,7 +23,7 @@ var actionsService = function($q, $rootScope, rpcService) {
      * Download script
      */
     self.downloadScript = function(script) {
-        rpcService.download('download_script', 'actions', {'script': script});
+        rpcService.download('download_script', 'actions', {'filename': script});
     };
 
     /**

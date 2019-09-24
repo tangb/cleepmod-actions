@@ -1,11 +1,16 @@
 {
     "icon": "play-box-outline",
-    "system": {
-        "widgets": [],
-        "services": []
+    "global": {
+        "js": ["actions.service.js"]
     },
     "config": {
-        "js": ["actions.directive.js", "actions.service.js"],
-        "html": ["uploadAction.directive.html", "actions.directive.html"]
+        "js": ["actions.config.js"],
+        "html": ["upload.dialog.html", "actions.config.html"]
+    },
+    "pages": {
+        "actionEditor": {
+            "js": ["editor.page.js"],
+            "html": ["editor.page.html"]
+        }
     }
 }

@@ -23,7 +23,7 @@ var actionsConfigDirective = function($rootScope, toast, raspiotService, actions
             return $mdDialog.show({
                 controller: function() { return self; },
                 controllerAs: 'actionsCtl',
-                templateUrl: 'uploadAction.directive.html',
+                templateUrl: 'upload.dialog.html',
                 parent: angular.element(document.body),
                 clickOutsideToClose: false,
                 fullscreen: true
@@ -64,8 +64,15 @@ var actionsConfigDirective = function($rootScope, toast, raspiotService, actions
                 })
                 .then(function() {
                     //edit new script
-                    $window.location.href = '#!/module/actions/edit/' + script;
+                    $window.location.href = '#!/module/actions/actionEditor/?script=' + script;
                 });
+        };
+
+        /**
+         * Edit script
+         */
+        self.editScript = function(script) {
+            $window.location.href = '#!/module/actions/actionEditor/?script=' + script.name;
         };
 
         /**
@@ -138,6 +145,7 @@ var actionsConfigDirective = function($rootScope, toast, raspiotService, actions
          * Init controller
          */
         self.init = function() {
+            //get config
             raspiotService.getModuleConfig('actions')
                 .then(function(config) {
                     self.scripts = config.scripts;
@@ -163,7 +171,7 @@ var actionsConfigDirective = function($rootScope, toast, raspiotService, actions
     };
 
     return {
-        templateUrl: 'actions.directive.html',
+        templateUrl: 'actions.config.html',
         replace: true,
         controller: actionController,
         controllerAs: 'actionsCtl',

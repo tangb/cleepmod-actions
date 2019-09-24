@@ -1,0 +1,88 @@
+<div layout="column" ng-cloak>
+
+    <!-- toolbar -->
+    <div layout="row">
+
+        <!-- editor -->
+        <div flex="66" layout="column" layout-align="start stretch">
+
+            <!-- toolbar -->
+            <div layout="row" layout-align="end center" style="padding: 5px 0px;">
+                <h1 class="md-title" style="padding-left:15px;">
+                    Editor
+                </h1>
+                <div flex></div>
+                <md-button aria-label="Show header" ng-click="actionEditorPageCtl.showHeader=!actionEditorPageCtl.showHeader" ng-disabled="actionEditorPageCtl.debugging" class="md-raised">
+                    <md-icon md-svg-icon="view-headline"></md-icon>
+                    Header
+                </md-button>
+                <md-button aria-label="Save" ng-click="actionEditorPageCtl.save()" ng-disabled="actionEditorPageCtl.debugging" class="md-raised">
+                    <md-icon md-svg-icon="content-save"></md-icon>
+                    Save
+                </md-button>
+                <md-button aria-label="Save as" ng-click="actionEditorPageCtl.saveAs()" ng-disabled="actionEditorPageCtl.debugging" class="md-raised">
+                    <md-icon md-svg-icon="content-save-settings"></md-icon>
+                    Save as
+                </md-button>
+            </div>
+
+            <!-- header -->
+            <div ui-codemirror ng-if="actionEditorPageCtl.showHeader" ui-codemirror-opts="actionEditorPageCtl.options" ng-model="actionEditorPageCtl.header" class="codemirror-header"></div>
+
+            <!-- source code -->
+            <div ui-codemirror ui-codemirror-opts="actionEditorPageCtl.options" ng-model="actionEditorPageCtl.code" class="codemirror-code"></div>
+
+        </div>
+
+        <md-divider></md-divider>
+
+        <!-- debug -->
+        <div flex="33" layout="column" layout-align="start stretch">
+            
+            <!-- toolbar -->
+            <div layout="row" layout-align="start center" style="padding: 5px 0px;">
+                <h1 class="md-title" style="padding-left:15px;">
+                    Debug
+                </h1>
+                <div flex></div>
+                <md-button aria-label="Debug" ng-click="actionEditorPageCtl.debug()" ng-disabled="actionEditorPageCtl.debugging" class="md-raised">
+                    <md-icon md-svg-icon="play-circle"></md-icon>
+                    Debug
+                </md-button>
+            </div>
+
+            <!-- debug output -->
+            <div>
+                <md-list>
+                    <md-list-item ng-repeat="debug in actionEditorPageCtl.debugs" class="debug-line">
+                        <md-icon md-svg-icon="bug" ng-if="debug.level==='DEBUG'" class="debug-icon-debug">
+                            <md-tooltip md-direction="left">Debug</md-tooltip>
+                        </md-icon>
+                        <md-icon md-svg-icon="lightbulb-outline" ng-if="debug.level==='INFO'" class="debug-icon-info">
+                            <md-tooltip md-direction="left">Info</md-tooltip>
+                            lightbulb_outline
+                        </md-icon>
+                        <md-icon md-svg-icon="alert" ng-if="debug.level==='WARNING'" class="debug-icon-warning">
+                            <md-tooltip md-direction="left">Warning</md-tooltip>
+                        </md-icon>
+                        <md-icon md-svg-icon="alert-circle" ng-if="debug.level==='ERROR'" class="debug-icon-error">
+                            <md-tooltip md-direction="left">Error</md-tooltip>
+                        </md-icon>
+                        <md-icon md-svg-icon="skull" ng-if="debug.level==='CRITICAL'" class="debug-icon-critical">
+                            <md-tooltip md-direction="left">Critical</md-tooltip>
+                        </md-icon>
+                        <md-icon md-svg-icon="thumb-down" ng-if="debug.level==='EXCEPTION'" class="debug-icon-exception">
+                            <md-tooltip md-direction="left">Exception</md-tooltip>
+                        </md-icon>
+                        <p>
+                            <span class="md-body-2">{{debug.timestamp | hrMilliseconds}}</span> : <span class="md-body-1">{{debug.message}}</span>
+                        </p>
+                    </md-list-item>
+                </md-list>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+

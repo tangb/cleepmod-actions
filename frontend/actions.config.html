@@ -1,0 +1,83 @@
+<div layout="column" layout-padding ng-cloak>
+
+    <md-list>
+        
+        <md-subheader class="md-no-sticky">Available actions</md-subheader>
+
+        <!-- no item -->
+        <md-list-item ng-if="(actionsCtl.scripts).length===0">
+            <p>
+                No action created yet, click on
+                <md-button class="md-fab md-mini md-accent default-cursor" aria-label="Add action">
+                    <md-icon md-svg-icon="dots-vertical"></md-icon>
+                </md-button>
+                button below to create or upload new action.
+            </p>
+        </md-list-item>
+
+        <!-- item list -->
+        <md-list-item ng-repeat="script in actionsCtl.scripts">
+
+            <!-- icon -->
+            <md-icon md-svg-icon="play" class="icon-md" ng-if="!script.disabled">
+                <md-tooltip>Action is enabled</md-tooltip>
+            </md-icon>
+            <md-icon md-svg-icon="stop" class="icon-md" ng-if="script.disabled">
+                <md-tooltip>Action is disabled</md-tooltip>
+            </md-icon>
+
+            <!-- name -->
+            <p>
+                {{script.name}}
+            </p>
+
+            <!-- last execution -->
+            <div class="md-secondary md-secondary-rpadding">
+                Last execution:
+                {{script.lastexecution | hrDatetime}}
+            </div>
+
+            <!-- actions -->
+            <md-menu class="md-secondary">
+                <md-button class="md-icon-button">
+                    <md-icon md-svg-icon="dots-vertical"></md-icon>
+                </md-button>
+                <md-menu-content width="3">
+                    <md-menu-item>
+                        <md-button ng-click="actionsCtl.editScript(script)" aria-label="Edit action">
+                            <md-icon md-svg-icon="pencil"></md-icon>
+                            Edit action
+                        </md-button>
+                    </md-menu-item>
+                    <md-menu-item ng-if="!script.disabled">
+                        <md-button ng-click="actionsCtl.disableScript(script.name, true)" aria-label="Disable action">
+                            <md-icon md-svg-icon="sleep-off"></md-icon>
+                            Disable action
+                        </md-button>
+                    </md-menu-item>
+                    <md-menu-item ng-if="script.disabled">
+                        <md-button ng-click="actionsCtl.disableScript(script.name, false)" aria-label="Enable action">
+                            <md-icon md-svg-icon="sleep"></md-icon>
+                            Enable action
+                        </md-button>
+                    </md-menu-item>
+                    <md-menu-item>
+                        <md-button ng-click="actionsCtl.downloadScript(script.name)" aria-label="Download action">
+                            <md-icon md-svg-icon="download"></md-icon>
+                            Download action
+                        </md-button>
+                    </md-menu-item>
+                    <md-menu-item>
+                        <md-button ng-click="actionsCtl.openDeleteDialog(script.name)" aria-label="Delete action">
+                            <md-icon md-svg-icon="delete"></md-icon>
+                            Delete action
+                        </md-button>
+                    </md-menu-item>
+                </md-menu-content>
+            </md-menu>
+         </md-list-item>
+
+    </md-list>
+
+</div>
+

@@ -9,7 +9,7 @@ from threading import Lock
 import time
 import re
 from raspiot.libs.internals.task import Task
-from script import Script
+from action import Action
 
 __all__ = ['Actions']
 
@@ -131,7 +131,7 @@ class Actions(RaspIotModule):
                         self._set_config_field(u'scripts', scripts)
 
                     #start new thread
-                    self.__scripts[script] = Script(os.path.join(root, script), self.push, disabled)
+                    self.__scripts[script] = Action(os.path.join(root, script), self.push, disabled)
                     self.__scripts[script].start()
 
         self.__load_scripts_lock.release()
@@ -194,7 +194,8 @@ class Actions(RaspIotModule):
         #read file content
         self.logger.debug(u'Loading script: %s' % path)
         lines = self.cleep_filesystem.read_data(path, encoding='utf-8')
-        content = u'\n'.join(lines)
+        self.logger.debug('Loaded lines: %s' % lines)
+        content = u''.join(lines)
 
         #parse file
         groups = re.findall(u'# -\*- coding: utf-8 -\*-\n(?:\"\"\"\neditor:(\w+)\n(.*)\n\"\"\"\s)?(.*)', content, re.S | re.U)
@@ -268,7 +269,7 @@ class Actions(RaspIotModule):
         for script in self.__scripts:
             script = {
                 u'name': script,
-                u'lastexecution': self.__scripts[script].get_last_execution(),
+                u'status': self.__scripts[script].get_execution_status(),
                 u'disabled': self.__scripts[script].is_disabled()
             }
             scripts.append(script)
@@ -390,7 +391,7 @@ class Actions(RaspIotModule):
             raise InvalidParameter(u'Script "%s" does not exist' % script)
         
         #TODO handle event
-        debug = Script(os.path.join(Actions.SCRIPTS_PATH, script), self.push, False, True)
+        debug = Action(os.path.join(Actions.SCRIPTS_PATH, script), self.push, False, True)
         debug.start()
 
     def rename_script(self, old_script, new_script):

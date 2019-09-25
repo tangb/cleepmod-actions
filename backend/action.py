@@ -18,7 +18,7 @@ class ActionDebugLogger():
         """
         Constructor
         
-        Params:
+        Args:
             bus_push (function) callback to bus push function
         """
         self.__bus_push = bus_push
@@ -27,7 +27,7 @@ class ActionDebugLogger():
         """
         Emit debug message event.
 
-        Params:
+        Args:
             message (string): message
             level (string): log level
         """
@@ -51,7 +51,7 @@ class ActionDebugLogger():
         """
         Info message
 
-        Params:
+        Args:
             message (string): message
         """
         self.__add_message(message, u'DEBUG')
@@ -60,7 +60,7 @@ class ActionDebugLogger():
         """
         Info message
 
-        Params:
+        Args:
             message (string): message
         """
         self.__add_message(message, u'INFO')
@@ -69,7 +69,7 @@ class ActionDebugLogger():
         """
         Warning message
 
-        Params:
+        Args:
             message (string): message
         """
         self.__add_message(message, u'WARNING')
@@ -78,7 +78,7 @@ class ActionDebugLogger():
         """
         Warning message
 
-        Params:
+        Args:
             message (string): message
         """
         self.__add_message(message, u'WARNING')
@@ -87,7 +87,7 @@ class ActionDebugLogger():
         """
         Error message
 
-        Params:
+        Args:
             message (string): message
         """
         self.__add_message(message, u'ERROR')
@@ -96,7 +96,7 @@ class ActionDebugLogger():
         """
         Critical message
 
-        Params:
+        Args:
             message (string): message
         """
         self.__add_message(message, u'CRITICAL')
@@ -105,7 +105,7 @@ class ActionDebugLogger():
         """
         Critical message
 
-        Params:
+        Args:
             message (string): message
         """
         self.__add_message(message, u'CRITICAL')

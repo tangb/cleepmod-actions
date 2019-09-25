@@ -15,7 +15,7 @@ __all__ = ['Actions']
 
 class Actions(RaspIotModule):
     """
-    Action allows user to execute its own python scripts interacting with RaspIot
+    Actions application allows user to execute its own python scripts interacting with Cleep
     """
 
     MODULE_AUTHOR = u'Cleep'
@@ -37,7 +37,7 @@ class Actions(RaspIotModule):
 
     MODULE_CONFIG_FILE = u'actions.conf'
 
-    SCRIPTS_PATH = u'/var/opt/raspiot/scripts'
+    SCRIPTS_PATH = u'/var/opt/raspiot/actions'
     DEFAULT_CONFIG = {
         u'scripts': {}
     }
@@ -163,11 +163,12 @@ class Actions(RaspIotModule):
         """
         Return a script
 
-        Params:
+        Args:
             script (string): script name
 
         Returns:
             dict: script data::
+
                 {
                     visual (string): visual editor used to edit file or None if no editor used
                     code (string): source code
@@ -216,7 +217,7 @@ class Actions(RaspIotModule):
         """
         Save script content. If script name if not found, it will create new script
 
-        Params:
+        Args:
             script (string): script name
             editor (string): editor name
             header (string): script header (header comments, may contains editor specific stuff)
@@ -256,6 +257,7 @@ class Actions(RaspIotModule):
         
         Returns:
             list: list of scripts::
+
                 [
                     {
                         name (string): script name
@@ -264,6 +266,7 @@ class Actions(RaspIotModule):
                     },
                     ...
                 ]
+
         """
         scripts = []
         for script in self.__scripts:
@@ -376,7 +379,7 @@ class Actions(RaspIotModule):
         """
         Launch script debugging. Script output will be send to message bus as event
 
-        Params:
+        Args:
             script (string): script name
             event_name (string): event name
             event_values (dict): event values

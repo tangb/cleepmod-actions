@@ -12,10 +12,6 @@
                     Editor
                 </h1>
                 <div flex></div>
-                <md-button aria-label="Show header" ng-click="actionEditorPageCtl.showHeader=!actionEditorPageCtl.showHeader" ng-disabled="actionEditorPageCtl.debugging" class="md-raised">
-                    <md-icon md-svg-icon="view-headline"></md-icon>
-                    Header
-                </md-button>
                 <md-button aria-label="Save" ng-click="actionEditorPageCtl.save()" ng-disabled="actionEditorPageCtl.debugging" class="md-raised">
                     <md-icon md-svg-icon="content-save"></md-icon>
                     Save
@@ -23,6 +19,14 @@
                 <md-button aria-label="Save as" ng-click="actionEditorPageCtl.saveAs()" ng-disabled="actionEditorPageCtl.debugging" class="md-raised">
                     <md-icon md-svg-icon="content-save-settings"></md-icon>
                     Save as
+                </md-button>
+                <md-button aria-label="Show header" ng-click="actionEditorPageCtl.showHeader=!actionEditorPageCtl.showHeader" ng-disabled="actionEditorPageCtl.debugging" class="md-raised">
+                    <md-icon md-svg-icon="view-headline"></md-icon>
+                    Header
+                </md-button>
+                <md-button aria-label="Show header" ng-href="{{'https://github.com/tangb/cleepmod-actions/wiki/Memo'}}" target="_blank" class="md-raised">
+                    <md-icon md-svg-icon="lifebuoy"></md-icon>
+                    Help
                 </md-button>
             </div>
 

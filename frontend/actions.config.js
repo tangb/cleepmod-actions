@@ -146,7 +146,7 @@ var actionsConfigDirective = function($rootScope, toast, raspiotService, actions
          */
         self.init = function() {
             //get config
-            raspiotService.getModuleConfig('actions')
+            raspiotService.reloadModuleConfig('actions')
                 .then(function(config) {
                     self.scripts = config.scripts;
                 });

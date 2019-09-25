@@ -33,8 +33,10 @@
 
             <!-- last execution -->
             <div class="md-secondary md-secondary-rpadding">
-                Last execution:
-                {{script.lastexecution | hrDatetime}}
+                <span>Last execution </span>
+                <span ng-if="!script.status.error">succeed</span>
+                <span ng-if="script.status.error">failed</span>
+                <span> at {{script.status.timestamp | hrDatetime}}</span>
             </div>
 
             <!-- actions -->

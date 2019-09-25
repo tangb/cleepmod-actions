@@ -9,9 +9,9 @@ from collections import deque
 import time
 import traceback
 
-class ScriptDebugLogger():
+class ActionDebugLogger():
     """
-    Logger instance for script debugging
+    Logger instance for action debugging
     """
 
     def __init__(self, bus_push):
@@ -123,12 +123,12 @@ class ScriptDebugLogger():
 
 
 
-class Script(Thread):
+class Action(Thread):
     """
-    Script class launches isolated thread for an action
+    Action class launches isolated thread for an action
     It handles 2 kinds of process:
-     - if debug parameter is True, Script instance runs action once and allows you to get output traces
-     - if debug parameter is False, Script instance runs undefinitely (until end of raspiot)
+     - if debug parameter is True, Action instance runs action once and allows you to get output traces
+     - if debug parameter is False, Action instance runs undefinitely (until end of raspiot)
     """
 
     def __init__(self, script, bus_push, disabled, debug=False, debug_event=None):
@@ -149,13 +149,14 @@ class Script(Thread):
         #members
         self.__debug = debug
         if debug:
-            self.__debug_logger = ScriptDebugLogger(bus_push)
+            self.__debug_logger = ActionDebugLogger(bus_push)
         self.script = script
         self.__bus_push = bus_push
         self.__events = deque()
         self.__continu = True
         self.__disabled = disabled
         self.last_execution = None
+        self.error_occured = False
         self.logger_level = logging.INFO
 
     def stop(self):
@@ -164,14 +165,23 @@ class Script(Thread):
         """
         self.__continu = False
 
-    def get_last_execution(self):
+    def get_execution_status(self):
         """
-        Get last script execution
+        Get last execution status
 
         Returns:
-            int: timestamp
+            dict: execution status::
+
+            {
+                timestamp (str): last execution time
+                error (bool): True if last execution failed
+            }
+
         """
-        return self.last_execution
+        return {
+            u'timestamp': self.last_execution,
+            u'error': self.error_occured,
+        }
 
     def set_debug_level(self, level):
         """
@@ -209,19 +219,17 @@ class Script(Thread):
         """
         self.__events.appendleft(event)
 
-    def __exec_script(self):
-        """
-        Execute script
-        """
-        pass
-
     def run(self):
         """
-        Script execution process
+        Action execution process
         """
         #configure logger
         self.logger.setLevel(self.logger_level)
-        self.logger.debug(u'Thread started')
+        self.logger.debug(u'Action thread started')
+
+        #check if variable is defined
+        def var_defined(variable_name):
+            return variable_name in vars()
 
         #send command helper
         def command(command, to, params=None):
@@ -247,7 +255,7 @@ class Script(Thread):
 
         if self.__debug:
             #event in queue, get event
-            self.logger.debug(u'Script execution')
+            self.logger.debug(u'Action execution')
 
             #special logger for debug to store trace
             logger = self.__debug_logger
@@ -256,7 +264,7 @@ class Script(Thread):
             try:
                 execfile(self.script)
             except:
-                logger.exception(u'Fatal error in script "%s"' % self.script)
+                logger.exception(u'Fatal error in action "%s"' % self.script)
 
             #send end event
             request = MessageRequest()
@@ -272,7 +280,7 @@ class Script(Thread):
                 if len(self.__events)>0:
                     #check if file exists
                     if not os.path.exists(self.script):
-                        self.logger.error(u'Script does not exist. Stop thread')
+                        self.logger.error(u'Action script "%s" does not exist. Stop thread' % self.script)
                         break
 
                     #event in queue, process it
@@ -281,7 +289,7 @@ class Script(Thread):
                     #drop script execution if script disabled
                     if self.__disabled:
                         #script is disabled
-                        self.logger.debug(u'Script is disabled. Drop execution')
+                        self.logger.debug(u'Action script "%s" is disabled. Drop execution' % self.script)
                         continue
 
                     #event helpers
@@ -289,17 +297,19 @@ class Script(Thread):
                     event_values = current_event[u'params']
                     
                     #and execute file
-                    self.logger.debug(u'Script execution')
+                    self.logger.debug(u'Action execution')
                     try:
                         execfile(self.script)
                         self.last_execution = int(time.time())
+                        self.error_occured = False
                     except:
-                        self.logger.exception(u'Fatal error in script "%s"' % self.script)
+                        self.error_occured = True
+                        self.logger.exception(u'Fatal error in action script "%s"' % self.script)
 
                 else:
                     #no event, pause
-                    time.sleep(0.25)
+                    time.sleep(0.50)
 
-        self.logger.debug(u'Thread is stopped')
+        self.logger.debug(u'Action thread is stopped')
 
         

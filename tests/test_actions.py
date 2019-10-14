@@ -12,7 +12,7 @@ from mock import Mock
 class TestActions(unittest.TestCase):
 
     def setUp(self):
-        self.session = session.Session(logging.CRITICAL)
+        self.session = session.TestSession(logging.CRITICAL)
         _action = Actions
         self.module = self.session.setup(_actions)
 
